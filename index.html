@@ -269,6 +269,36 @@ button {
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 
 </head>
+
+<style>
+
+  /* Estilo padrão (modo claro) */
+  .card {
+    background-color: white;
+    color: black;
+    padding: 1em;
+    border-radius: 8px;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+    margin-bottom: 10px;
+  }
+
+  .card .detalhes {
+    color: black;
+  }
+
+  /* Modo escuro */
+  body.dark-mode .card {
+    background-color: #1e1e1e;
+    color: white;
+  }
+
+  body.dark-mode .card .detalhes {
+    color: white;
+  }
+</style>
+
+</style>
+
 <body>
 
 <div class="login-container" id="loginContainer">
@@ -458,8 +488,20 @@ function alternarModoEscuro() {
   }
 
   const clone = resultados.cloneNode(true);
+
+  // Força o estilo de fundo branco e texto preto no clone
+  clone.style.backgroundColor = 'white';
+  clone.style.color = 'black';
+
+  clone.querySelectorAll('.card').forEach(card => {
+    card.style.backgroundColor = 'white';
+    card.style.color = 'black';
+    card.style.boxShadow = 'none';
+  });
+
   clone.querySelectorAll('.detalhes').forEach(div => {
-    div.style.display = 'block'; // Garante que os detalhes apareçam
+    div.style.display = 'block';
+    div.style.color = 'black';
   });
 
   const opt = {
@@ -472,6 +514,7 @@ function alternarModoEscuro() {
 
   html2pdf().from(clone).set(opt).save();
 }
+
 
 </script>
 
