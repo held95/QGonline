@@ -7,148 +7,263 @@
   <!-- hCaptcha -->
   <script src="https://js.hcaptcha.com/1/api.js" async defer></script>
   <style>
-    root {
-      --fundo-claro: #f4f4f4;
-      --fundo-escuro: #1c1c1c;
-      --texto-claro: #e0e0e0;
-      --fundo-cartao-claro: #fff;
-      --fundo-cartao-escuro: #2a2a2a;
-      --borda: #ccc;
-      --borda-escura: #666;
-    }
+   /* Variáveis de cores */
+:root {
+  --fundo-claro: linear-gradient(135deg, #144d14, #0b2d0b); /* verde escuro degradê */
+  --fundo-escuro: #000000;
+  --texto-claro: #ffffff;
+  --fundo-cartao-claro: #1e3b1e;
+  --fundo-cartao-escuro: #121212;
+  --borda: #444;
+  --borda-escura: #666;
+  --btn-primary: #28a745;
+  --btn-primary-hover: #218838;
+  --btn-pdf-bg: #006400;
+  --btn-pdf-hover: #004d00;
+}
 
-    body {
-      font-family: Arial, sans-serif;
-      padding: 20px;
-      background: var(--fundo-claro);
-      transition: background 0.3s, color 0.3s;
-    }
+/* BODY */
+body {
+  font-family: Arial, sans-serif;
+  padding: 20px;
+  background: var(--fundo-claro);
+  color: var(--texto-claro);
+  transition: background 0.3s ease, color 0.3s ease;
+}
 
-    body.dark-mode {
-      background: var(--fundo-escuro);
-      color: var(--texto-claro);
-    }
+/* Modo escuro */
+body.dark-mode {
+  background: var(--fundo-escuro);
+  color: var(--texto-claro);
+}
 
-    .login-container, .main-content {
-      max-width: 900px;
-      margin: auto;
-    }
+/* Container login e main content */
+.login-container, .main-content {
+  max-width: 900px;
+  margin: auto;
+}
 
-    .login-container {
-      margin-top: 100px;
-      background: var(--fundo-cartao-claro);
-      padding: 30px;
-      border-radius: 10px;
-      box-shadow: 0 0 10px rgba(0,0,0,0.1);
-    }
+.login-container {
+  margin-top: 100px;
+  background: var(--fundo-cartao-claro);
+  padding: 30px;
+  border-radius: 10px;
+  box-shadow: 0 0 15px rgba(0,0,0,0.6);
+  color: var(--texto-claro);
+}
 
-    .dark-mode .login-container {
-      background: var(--fundo-cartao-escuro);
-    }
+.dark-mode .login-container {
+  background: var(--fundo-cartao-escuro);
+  box-shadow: 0 0 15px rgba(255,255,255,0.1);
+}
 
-    .login-container input {
-      display: block;
-      width: 100%;
-      padding: 10px;
-      margin-top: 10px;
-      margin-bottom: 20px;
-      font-size: 16px;
-      border-radius: 5px;
-      border: 1px solid #ccc;
-    }
+/* Inputs */
+.login-container input {
+  display: block;
+  width: 100%;
+  padding: 12px;
+  margin-top: 10px;
+  margin-bottom: 20px;
+  font-size: 16px;
+  border-radius: 6px;
+  border: 1px solid var(--borda);
+  background: #2f4d2f;
+  color: var(--texto-claro);
+  transition: border-color 0.3s ease;
+}
 
-    .login-container button {
-      width: 100%;
-      padding: 10px;
-      background: #007bff;
-      border: none;
-      color: white;
-      font-size: 16px;
-      border-radius: 5px;
-      cursor: pointer;
-    }
+.login-container input:focus {
+  border-color: var(--btn-primary);
+  outline: none;
+}
 
-    #darkModeToggle {
-      margin: 10px 0;
-      padding: 8px 16px;
-      background: #444;
-      color: white;
-      border: none;
-      border-radius: 5px;
-      cursor: pointer;
-    }
+/* Botões padrão */
+button {
+  font-weight: 600;
+  transition: background-color 0.3s ease;
+  user-select: none;
+}
 
-    .search-container {
-      display: flex;
-      gap: 10px;
-      flex-wrap: wrap;
-      margin: 20px 0;
-    }
+/* Botão Confirmar login */
+.login-container button {
+  width: 100%;
+  padding: 12px;
+  background: var(--btn-primary);
+  border: none;
+  color: white;
+  font-size: 16px;
+  border-radius: 6px;
+  cursor: pointer;
+}
 
-    .search-container input[type="text"] {
-      flex: 1;
-      min-width: 200px;
-      padding: 10px;
-      font-size: 16px;
-      border-radius: 5px;
-      border: 1px solid #ccc;
-    }
+.login-container button:hover {
+  background: var(--btn-primary-hover);
+}
 
-    .search-container button {
-      padding: 10px 20px;
-      font-size: 16px;
-      background: #28a745;
-      color: white;
-      border: none;
-      border-radius: 5px;
-      cursor: pointer;
-    }
+/* Botão Modo Escuro */
+#darkModeToggle {
+  margin: 10px 10px 10px 0;
+  padding: 10px 20px;
+  background: #444;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 600;
+  box-shadow: 0 3px 8px rgba(0,0,0,0.3);
+}
 
-    .filters {
-      margin-bottom: 10px;
-    }
+#darkModeToggle:hover {
+  background: #555;
+}
 
-    .filters button {
-      background-color: #6c757d;
-      margin: 5px 5px 5px 0;
-      padding: 10px 15px;
-      border: none;
-      color: white;
-      border-radius: 5px;
-      cursor: pointer;
-    }
+/* Botão Gerar PDF — destacado e mais bonito */
+#gerarPdfBtn {
+  margin: 10px 0 20px 0;
+  padding: 12px 25px;
+  background: var(--btn-pdf-bg);
+  color: white;
+  font-weight: 700;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  box-shadow: 0 4px 12px rgba(0,100,0,0.5);
+  transition: background-color 0.3s ease, box-shadow 0.3s ease;
+}
 
-    .filters button.active {
-      background-color: #28a745;
-    }
+#gerarPdfBtn:hover {
+  background: var(--btn-pdf-hover);
+  box-shadow: 0 6px 15px rgba(0,120,0,0.7);
+}
 
-    .results {
-      margin-top: 20px;
-    }
+/* Busca de Médicos título - sempre branco */
+.main-content > h2 {
+  color: var(--texto-claro);
+  text-align: center;
+  margin-bottom: 20px;
+  font-size: 2.4rem;
+  text-shadow: 1px 1px 5px rgba(0,0,0,0.7);
+}
 
-    .card {
-      background: var(--fundo-cartao-claro);
-      padding: 15px;
-      border-radius: 8px;
-      box-shadow: 0 0 5px rgba(0,0,0,0.1);
-      margin-bottom: 15px;
-    }
+/* Resultados encontrados - sempre branco */
+#contadorResultados {
+  color: var(--texto-claro);
+  font-weight: 600;
+  font-size: 1.1rem;
+  margin-bottom: 15px;
+  text-shadow: 1px 1px 3px rgba(0,0,0,0.6);
+}
 
-    .dark-mode .card {
-      background: #333;
-      color: var(--texto-claro);
-    }
+/* Search container */
+.search-container {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin: 20px 0;
+}
 
-    .detalhes {
-      margin-top: 10px;
-      padding-top: 10px;
-      border-top: 1px solid var(--borda);
-      font-size: 14px;
-    }
+.search-container input[type="text"] {
+  flex: 1;
+  min-width: 200px;
+  padding: 12px;
+  font-size: 16px;
+  border-radius: 6px;
+  border: 1px solid var(--borda);
+  background: #2f4d2f;
+  color: var(--texto-claro);
+  transition: border-color 0.3s ease;
+}
 
-    .dark-mode .detalhes {
-      border-top: 1px solid var(--borda-escura);
-    }
+.search-container input[type="text"]:focus {
+  border-color: var(--btn-primary);
+  outline: none;
+}
+
+.search-container button {
+  padding: 12px 25px;
+  font-size: 16px;
+  background: var(--btn-primary);
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 600;
+  box-shadow: 0 4px 8px rgba(0,123,255,0.4);
+  transition: background-color 0.3s ease;
+}
+
+.search-container button:hover {
+  background: #0069d9;
+}
+
+/* Filtros */
+.filters {
+  margin-bottom: 10px;
+}
+
+.filters button {
+  background-color: #6c757d;
+  margin: 5px 5px 5px 0;
+  padding: 10px 15px;
+  border: none;
+  color: white;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: background-color 0.3s ease;
+}
+
+.filters button.active {
+  background-color: var(--btn-primary);
+}
+
+.filters button:hover:not(.active) {
+  background-color: #5a6268;
+}
+
+/* Cards de resultados */
+.card {
+  background: var(--fundo-cartao-claro);
+  padding: 15px;
+  border-radius: 12px;
+  box-shadow: 0 0 8px rgba(0,0,0,0.15);
+  margin-bottom: 15px;
+  color: var(--texto-claro);
+  transition: background 0.3s ease;
+}
+
+.dark-mode .card {
+  background: #222;
+  color: var(--texto-claro);
+}
+
+/* Detalhes dentro do card */
+.detalhes {
+  margin-top: 10px;
+  padding-top: 10px;
+  border-top: 1px solid var(--borda);
+  font-size: 14px;
+  color: var(--texto-claro);
+}
+
+.dark-mode .detalhes {
+  border-top: 1px solid var(--borda-escura);
+}
+
+/* Scrollbar estilizada para ficar mais clean */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: #28a745;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background-color: #218838;
+}
+
   </style>
   
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
@@ -211,9 +326,18 @@
     if (e.key === "Enter") buscar();
   });
 
-  function alternarModoEscuro() {
-    document.body.classList.toggle('dark-mode');
+function alternarModoEscuro() {
+  const body = document.body;
+  body.classList.toggle('dark-mode');
+
+  const botao = document.getElementById('darkModeToggle');
+  if (body.classList.contains('dark-mode')) {
+    botao.textContent = 'Modo Claro';
+  } else {
+    botao.textContent = 'Modo Escuro';
   }
+}
+
 
   function validarLogin() {
     const login = document.getElementById("login").value;
