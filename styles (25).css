@@ -1,0 +1,66 @@
+ <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 20px;
+      background: #f4f4f4;
+    }
+    .search-container {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 20px;
+      flex-wrap: wrap;
+    }
+    input[type="text"] {
+      padding: 10px;
+      font-size: 16px;
+      flex: 1;
+      min-width: 200px;
+    }
+    button {
+      padding: 10px 15px;
+      font-size: 14px;
+      border: none;
+      background-color: #007bff;
+      color: white;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    .filters button {
+      background-color: #6c757d;
+      margin: 5px 5px 5px 0;
+    }
+    .filters button.active {
+      background-color: #28a745;
+    }
+    .results {
+      margin-top: 20px;
+    }
+    .card {
+      background: white;
+      padding: 15px;
+      border-radius: 8px;
+      box-shadow: 0 0 5px rgba(0,0,0,0.1);
+      margin-bottom: 10px;
+    }
+    .resumo {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .resumo strong {
+      display: block;
+    }
+    .detalhes {
+      display: none;
+      margin-top: 10px;
+      padding-top: 10px;
+      border-top: 1px solid #ccc;
+      font-size: 14px;
+    }
+    .toggle-btn {
+      cursor: pointer;
+      font-size: 18px;
+      background: none;
+      border: none;
+    }
+  </style>
