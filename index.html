@@ -45,12 +45,13 @@ body.dark-mode {
 
 .login-container {
   margin-top: 100px;
-  background: var(--fundo-cartao-claro);
+  background-color: #eaffea; /* fundo verde claro */
   padding: 30px;
   border-radius: 10px;
-  box-shadow: 0 0 15px rgba(0,0,0,0.6);
-  color: var(--texto-claro);
+  box-shadow: 0 0 15px rgba(0,0,0,0.2); /* sombra mais suave */
+  color: #000000; /* texto preto */
 }
+
 
 .dark-mode .login-container {
   background: var(--fundo-cartao-escuro);
@@ -67,8 +68,8 @@ body.dark-mode {
   font-size: 16px;
   border-radius: 6px;
   border: 1px solid var(--borda);
-  background: #2f4d2f;
-  color: var(--texto-claro);
+  background-color: #eaffea;  /* verde claro */
+  color: #000000;              /* texto preto */
   transition: border-color 0.3s ease;
 }
 
@@ -264,6 +265,16 @@ button {
   background-color: #218838;
 }
 
+/* Estilo exclusivo para o título "Acesso restrito" */
+.titulo-login {
+  font-size: 2rem;
+  font-weight: bold;
+  margin-bottom: 20px;
+  text-align: center;
+  color: #000000; /* texto preto */
+}
+
+
   </style>
   
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
@@ -302,7 +313,7 @@ button {
 <body>
 
 <div class="login-container" id="loginContainer">
-  <h2>Acesso Restrito</h2>
+  <h2 class="titulo-login">Acesso restrito</h2>
   <input type="text" id="login" placeholder="Login">
   <input type="password" id="senha" placeholder="Senha">
   <!-- hCaptcha -->
