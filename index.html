@@ -4,13 +4,29 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Busca de Médicos</title>
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+  <!-- hCaptcha -->
+  <script src="https://js.hcaptcha.com/1/api.js" async defer></script>
   <style>
+    root {
+      --fundo-claro: #f4f4f4;
+      --fundo-escuro: #1c1c1c;
+      --texto-claro: #e0e0e0;
+      --fundo-cartao-claro: #fff;
+      --fundo-cartao-escuro: #2a2a2a;
+      --borda: #ccc;
+      --borda-escura: #666;
+    }
+
     body {
-      font-family: 'Roboto', sans-serif;
-      background: #eef2f7;
+      font-family: Arial, sans-serif;
       padding: 20px;
+      background: var(--fundo-claro);
+      transition: background 0.3s, color 0.3s;
+    }
+
+    body.dark-mode {
+      background: var(--fundo-escuro);
+      color: var(--texto-claro);
     }
 
     .login-container, .main-content {
@@ -20,109 +36,195 @@
 
     .login-container {
       margin-top: 100px;
-      background: white;
+      background: var(--fundo-cartao-claro);
       padding: 30px;
-      border-radius: 15px;
-      box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
     }
 
-    .main-content {
-      margin-top: 30px;
+    .dark-mode .login-container {
+      background: var(--fundo-cartao-escuro);
     }
 
-    input[type="text"], input[type="password"] {
+    .login-container input {
+      display: block;
       width: 100%;
-      padding: 12px;
+      padding: 10px;
+      margin-top: 10px;
+      margin-bottom: 20px;
       font-size: 16px;
-      margin: 10px 0;
+      border-radius: 5px;
       border: 1px solid #ccc;
-      border-radius: 8px;
     }
 
-    button {
+    .login-container button {
+      width: 100%;
+      padding: 10px;
       background: #007bff;
       border: none;
       color: white;
-      padding: 12px;
       font-size: 16px;
-      border-radius: 8px;
+      border-radius: 5px;
       cursor: pointer;
-      transition: background 0.3s;
     }
 
-    button:hover {
-      background: #0056b3;
+    #darkModeToggle {
+      margin: 10px 0;
+      padding: 8px 16px;
+      background: #444;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    .search-container {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin: 20px 0;
+    }
+
+    .search-container input[type="text"] {
+      flex: 1;
+      min-width: 200px;
+      padding: 10px;
+      font-size: 16px;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+    }
+
+    .search-container button {
+      padding: 10px 20px;
+      font-size: 16px;
+      background: #28a745;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
     }
 
     .filters {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 10px;
-      margin-bottom: 20px;
+      margin-bottom: 10px;
     }
 
     .filters button {
       background-color: #6c757d;
-      padding: 8px 15px;
+      margin: 5px 5px 5px 0;
+      padding: 10px 15px;
+      border: none;
+      color: white;
+      border-radius: 5px;
+      cursor: pointer;
     }
 
     .filters button.active {
       background-color: #28a745;
     }
 
-    .results .card {
-      background: white;
-      border-radius: 10px;
-      padding: 20px;
-      box-shadow: 0 3px 10px rgba(0,0,0,0.05);
+    .results {
+      margin-top: 20px;
+    }
+
+    .card {
+      background: var(--fundo-cartao-claro);
+      padding: 15px;
+      border-radius: 8px;
+      box-shadow: 0 0 5px rgba(0,0,0,0.1);
       margin-bottom: 15px;
     }
 
+    .dark-mode .card {
+      background: #333;
+      color: var(--texto-claro);
+    }
+
     .detalhes {
-      margin-top: 15px;
+      margin-top: 10px;
       padding-top: 10px;
-      border-top: 1px solid #dee2e6;
+      border-top: 1px solid var(--borda);
       font-size: 14px;
     }
 
-    .result-count {
-      font-size: 14px;
-      margin-bottom: 10px;
-      color: #555;
+    .dark-mode .detalhes {
+      border-top: 1px solid var(--borda-escura);
     }
   </style>
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+
 </head>
 <body>
 
 <div class="login-container" id="loginContainer">
-  <h2 class="text-center">Acesso Restrito</h2>
+  <h2>Acesso Restrito</h2>
   <input type="text" id="login" placeholder="Login">
   <input type="password" id="senha" placeholder="Senha">
+  <!-- hCaptcha -->
+  <div class="h-captcha" data-sitekey="4e5c67ba-ca24-474e-b244-8520ab8efb32"></div>
   <button onclick="validarLogin()">Confirmar</button>
 </div>
 
 <div class="main-content" id="mainContent" style="display: none;">
-  <h2 class="mb-4">Busca de Médicos</h2>
-  <div class="d-flex flex-wrap gap-2 mb-3">
-    <input type="text" id="searchInput" placeholder="Digite nome ou CRM" class="form-control flex-grow-1">
-    <button onclick="buscar()" class="btn btn-primary">Buscar</button>
+  <h2>Busca de Médicos</h2>
+
+  <button id="darkModeToggle" onclick="alternarModoEscuro()">Modo Escuro</button>
+  <button id="gerarPdfBtn" onclick="gerarPDF()">Gerar PDF</button>
+
+  <div class="search-container">
+    <input type="text" id="searchInput" placeholder="Digite nome ou CRM">
+    <button onclick="buscar()">Buscar</button>
   </div>
+
   <div class="filters" id="filterButtons"></div>
-  <div class="result-count" id="resultCount"></div>
+  <div id="contadorResultados"></div>
   <div class="results" id="results"></div>
 </div>
 
 <script>
   const loginCorreto = "M&G2025";
   const senhaCorreta = "M&G@!2025QG";
+  const apiURL = 'https://sheetdb.io/api/v1/cahitouo88zxm';
+  let dados = [];
+  let filtroAtual = 'Todos';
+
+  const sinonimosHospitais = {
+    "CEJAM": ["cejam", "cejan"],
+    "AME CARAPICUIBA": ["ame carapicuiba", "carapicuiba"],
+    "MBOI": ["mboi", "mbói", "mboi mirim"],
+    "Tiradentes": ["tiradentes", "tiradêntes"],
+    "ITAIM": ["itaim", "itáim"],
+    "HGG": ["hgg", "hospital geral grajaú"],
+    "HMB": ["hmb", "hospital municipal barreto"],
+    "HGP": ["hgp", "hospital geral pirajussara"],
+    "Pedreira": ["pedreira", "hospital pedreira"],
+    "Ame dos Prados": ["ame dos prados", "dos prados"],
+    "HMU": ["hmu", "hospital municipal de urgência"],
+    "CHS": ["chs", "centro hospitalar sul"]
+  };
 
   document.getElementById("senha").addEventListener("keypress", function(e) {
     if (e.key === "Enter") validarLogin();
   });
 
+  document.getElementById("searchInput").addEventListener("keypress", function(e) {
+    if (e.key === "Enter") buscar();
+  });
+
+  function alternarModoEscuro() {
+    document.body.classList.toggle('dark-mode');
+  }
+
   function validarLogin() {
     const login = document.getElementById("login").value;
     const senha = document.getElementById("senha").value;
+
+    const hcaptchaResponse = hcaptcha.getResponse();
+
+    if (!hcaptchaResponse) {
+      alert("Por favor, verifique o hCaptcha.");
+      return;
+    }
 
     if (login === loginCorreto && senha === senhaCorreta) {
       document.getElementById("loginContainer").style.display = "none";
@@ -134,31 +236,12 @@
     }
   }
 
-  const apiURL = 'https://sheetdb.io/api/v1/cahitouo88zxm';
-  let dados = [];
-  let filtroAtual = 'Todos';
-
-  const sinonimosHospitais = {
-    "CEJAM": ["cejam", "cejam ", " cejam", "Cejam", "cejan"],
-    "AME CARAPICUIBA": ["ame carapicuiba", "carapicuiba", "ame carapícuiba", "carapícuiba", "Ame Carapicuiba", "Carapicuíba"],
-    "MBOI": ["mboi", "mbói", "M'Boi", "Mboi Mirim"],
-    "Tiradentes": ["tiradentes", "tiradêntes", "tiradentis"],
-    "ITAIM": ["itaim", "itain", "itáim"],
-    "HGG": ["hgg", "hospital geral grajaú"],
-    "HMB": ["hmb", "hospital municipal barreto"],
-    "HGP": ["hgp", "hospital geral pirajussara"],
-    "Pedreira": ["H. Pedreira", "PEDREIRA", "pedreira", "pedrêra", "Hospital Pedreira", "Hosp Pedreira"],
-    "Ame dos Prados": ["ame dos prados", "ame prados", "dos prados"],
-    "HMU": ["hmu", "hospital municipal de urgência"],
-    "CHS": ["chs", "centro hospitalar sul"]
-  };
-
   function removerAcentos(str) {
-    return str.normalize("NFD").replace(/[̀-ͯ]/g, "");
+    return str.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
   }
 
   function normalizarHospital(hospital) {
-    const chave = removerAcentos(hospital?.toLowerCase().trim() || '');
+    const chave = removerAcentos((hospital || "").toLowerCase().trim());
     for (const [padrao, sinonimos] of Object.entries(sinonimosHospitais)) {
       if (sinonimos.map(removerAcentos).includes(chave)) return padrao;
     }
@@ -166,10 +249,15 @@
   }
 
   async function buscarDados() {
-    const response = await fetch(apiURL);
-    const json = await response.json();
-    dados = json.map(p => ({ ...p, HospitalNormalizado: normalizarHospital(p["Hospital"]) }));
-    renderizarResultados(dados);
+    try {
+      const response = await fetch(apiURL);
+      const json = await response.json();
+      dados = json.map(p => ({ ...p, HospitalNormalizado: normalizarHospital(p["Hospital"]) }));
+      renderizarResultados(dados);
+    } catch (error) {
+      alert("Erro ao buscar dados.");
+      console.error(error);
+    }
   }
 
   function buscar() {
@@ -178,51 +266,52 @@
       p["Nome"]?.toLowerCase().includes(termo) ||
       p["CRM"]?.toLowerCase().includes(termo)
     );
-    const filtradoPorHospital = filtroAtual === 'Todos' ? filtrado : filtrado.filter(p => p.HospitalNormalizado === filtroAtual);
-    renderizarResultados(filtradoPorHospital);
+    const resultado = filtroAtual === 'Todos' ? filtrado : filtrado.filter(p => p.HospitalNormalizado === filtroAtual);
+    renderizarResultados(resultado);
   }
 
   function filtrar(hospital) {
     filtroAtual = hospital;
     document.querySelectorAll(".filters button").forEach(btn => btn.classList.remove("active"));
-    [...document.querySelectorAll(".filters button")].find(b => b.textContent === hospital).classList.add("active");
+    const botao = [...document.querySelectorAll(".filters button")].find(b => b.textContent === hospital);
+    if (botao) botao.classList.add("active");
     buscar();
   }
 
   function renderizarResultados(lista) {
     const container = document.getElementById("results");
-    const resultCount = document.getElementById("resultCount");
-
-    resultCount.textContent = `${lista.length} resultado(s) encontrado(s).`;
+    const contador = document.getElementById("contadorResultados");
+    contador.textContent = `${lista.length} resultado(s) encontrado(s).`;
 
     if (lista.length === 0) {
-      container.innerHTML = "<p class='text-muted'>Nenhum resultado encontrado.</p>";
+      container.innerHTML = "<p>Nenhum resultado encontrado.</p>";
       return;
     }
 
-    container.innerHTML = lista.map((pessoa) => `
+    container.innerHTML = lista.map(p => `
       <div class="card">
-        <h5>${pessoa["Nome"] || 'N/A'} - CRM: ${pessoa["CRM"] || 'N/A'}</h5>
-        <p><strong>Especialidade:</strong> ${pessoa["Especialidade"] || 'N/A'}<br>
-        <strong>Hospital:</strong> ${pessoa["Hospital"] || 'N/A'}</p>
+        <strong>Nome:</strong> ${p["Nome"] || 'N/A'}<br>
+        <strong>CRM:</strong> ${p["CRM"] || 'N/A'}<br>
+        <strong>Especialidade:</strong> ${p["Especialidade"] || 'N/A'}<br>
+        <strong>Hospital:</strong> ${p["Hospital"] || 'N/A'}
         <div class="detalhes">
-          <strong>IR:</strong> ${pessoa["IR"] || 'N/A'}<br>
-          <strong>Contrato:</strong> ${pessoa["Contrato"] || 'N/A'}<br>
-          <strong>CPF:</strong> ${pessoa["CPF"] || 'N/A'}<br>
-          <strong>RQE:</strong> ${pessoa["RQE"] || 'N/A'}<br>
-          <strong>Nome da Mãe:</strong> ${pessoa["Nome da Mãe"] || 'N/A'}<br>
-          <strong>Data de Nascimento:</strong> ${pessoa["Data de Nascimento"] || 'N/A'}<br>
-          <strong>PIX:</strong> ${pessoa["PIX"] || 'N/A'}<br>
-          <strong>Banco:</strong> ${pessoa["Banco"] || 'N/A'}<br>
-          <strong>Código do Banco:</strong> ${pessoa["Codigo do Banco"] || 'N/A'}<br>
-          <strong>Agência:</strong> ${pessoa["Agência sem digito"] || 'N/A'}<br>
-          <strong>Conta:</strong> ${pessoa["Conta com o Dígito"] || 'N/A'}<br>
-          <strong>Estado civil:</strong> ${pessoa["Estado Civil"] || 'N/A'}<br>
-          <strong>Naturalidade:</strong> ${pessoa["Naturalidade"] || 'N/A'}<br>
-          <strong>E-mail:</strong> ${pessoa["E-mail"] || 'N/A'}<br>
-          <strong>WhatsApp:</strong> ${pessoa["Whatsapp"] || 'N/A'}<br>
-          <strong>CEP:</strong> ${pessoa["CEP"] || 'N/A'}<br>
-          <strong>Endereço:</strong> ${pessoa["Endereço"] || 'N/A'}
+          <strong>IR:</strong> ${p["IR"] || 'N/A'}<br>
+          <strong>Contrato:</strong> ${p["Contrato"] || 'N/A'}<br>
+          <strong>CPF:</strong> ${p["CPF"] || 'N/A'}<br>
+          <strong>RQE:</strong> ${p["RQE"] || 'N/A'}<br>
+          <strong>Nome da Mãe:</strong> ${p["Nome da Mãe"] || 'N/A'}<br>
+          <strong>Data de Nascimento:</strong> ${p["Data de Nascimento"] || 'N/A'}<br>
+          <strong>PIX:</strong> ${p["PIX"] || 'N/A'}<br>
+          <strong>Banco:</strong> ${p["Banco"] || 'N/A'}<br>
+          <strong>Código do Banco:</strong> ${p["Codigo do Banco"] || 'N/A'}<br>
+          <strong>Agência:</strong> ${p["Agência sem digito"] || 'N/A'}<br>
+          <strong>Conta:</strong> ${p["Conta com o Dígito"] || 'N/A'}<br>
+          <strong>Estado civil:</strong> ${p["Estado Civil"] || 'N/A'}<br>
+          <strong>Naturalidade:</strong> ${p["Naturalidade"] || 'N/A'}<br>
+          <strong>E-mail:</strong> ${p["E-mail"] || 'N/A'}<br>
+          <strong>WhatsApp:</strong> ${p["Whatsapp"] || 'N/A'}<br>
+          <strong>CEP:</strong> ${p["CEP"] || 'N/A'}<br>
+          <strong>Endereço:</strong> ${p["Endereço"] || 'N/A'}
         </div>
       </div>
     `).join('');
@@ -232,13 +321,34 @@
     const container = document.getElementById("filterButtons");
     const blocos = ["Todos", ...Object.keys(sinonimosHospitais)];
     container.innerHTML = blocos.map(bloco => `
-      <button onclick="filtrar('${bloco}')" class="btn ${bloco === 'Todos' ? 'btn-success active' : 'btn-secondary'}">${bloco}</button>
+      <button onclick="filtrar('${bloco}')" class="${bloco === 'Todos' ? 'active' : ''}">${bloco}</button>
     `).join('');
   }
+  
+  function gerarPDF() {
+  const resultados = document.getElementById("results");
 
-  document.getElementById("searchInput").addEventListener("keypress", function(e) {
-    if (e.key === "Enter") buscar();
+  if (!resultados || resultados.innerHTML.trim() === "") {
+    alert("Nenhum resultado para gerar PDF.");
+    return;
+  }
+
+  const clone = resultados.cloneNode(true);
+  clone.querySelectorAll('.detalhes').forEach(div => {
+    div.style.display = 'block'; // Garante que os detalhes apareçam
   });
+
+  const opt = {
+    margin:       0.5,
+    filename:     `medicos_resultado_${new Date().toISOString().slice(0,10)}.pdf`,
+    image:        { type: 'jpeg', quality: 0.98 },
+    html2canvas:  { scale: 2 },
+    jsPDF:        { unit: 'in', format: 'letter', orientation: 'portrait' }
+  };
+
+  html2pdf().from(clone).set(opt).save();
+}
+
 </script>
 
 </body>
