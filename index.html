@@ -22,6 +22,25 @@
   --btn-pdf-hover: #004d00;
 }
 
+
+const hospitalcores = { 
+  "Ame Carapicuiba": "blue",
+  "CEJAM": "orange",
+  "BRASILANDIA": "green",
+  "MBOI": "yellow",
+  "Tiradentes": "gray",
+  "ITAIM": "red",
+  "HGG": "purple",
+  "HMB": "pink",
+  "HGP": "black",
+  "Pedreira": "brown",
+  "Ame dos Prados": "Magenta",
+  "HMU": "Cyan",
+  "CHS": "Teal",
+  
+}
+  
+
 /* BODY */
 body {
   font-family: Arial, sans-serif;
@@ -360,6 +379,24 @@ button {
     "CHS": ["chs", "centro hospitalar sul", "Sorocaba", "H. Sorocaba"]
   };
 
+  // Mapeamento de hospitais para cores
+  const hospitalCores = {
+    "CEJAM": "lightblue",
+    "AME CARAPICUIBA": "orange",
+    "BRASILANDIA": "green",
+    "MBOI": "pink",
+    "Tiradentes": "blue",
+    "ITAIM": "coral",
+    "HGG": "purple",
+    "HMB": "brown",
+    "HGP": "teal",
+    "Pedreira": "turquoise",
+    "Ame dos Prados": "fuchsia",
+    "HMU": "olive",
+    "CHS": "navy"
+    // Adicione mais hospitais e cores conforme necessário
+  };
+
   document.getElementById("senha").addEventListener("keypress", function(e) {
     if (e.key === "Enter") validarLogin();
   });
@@ -368,17 +405,73 @@ button {
     if (e.key === "Enter") buscar();
   });
 
-function alternarModoEscuro() {
-  const body = document.body;
-  body.classList.toggle('dark-mode');
 
-  const botao = document.getElementById('darkModeToggle');
-  if (body.classList.contains('dark-mode')) {
-    botao.textContent = 'Modo Claro';
-  } else {
-    botao.textContent = 'Modo Escuro';
+  function criarCard(medico) {
+    const card = document.createElement('div');
+    card.classList.add('card');
+
+    const nomeMedico = document.createElement('h3');
+    nomeMedico.textContent = medico.Nome; // Use medico.Nome em vez de medico.nome
+
+    const especialidade = document.createElement('p');
+    especialidade.textContent = `Especialidade: ${medico.Especialidade}`; // Use medico.Especialidade
+
+    const hospital = medico.HospitalNormalizado; // Use HospitalNormalizado
+    const corHospital = hospitalCores[hospital] || "gray"; // Cor padrão se o hospital não estiver no mapeamento
+
+    const hospitalDiv = document.createElement('div');
+    hospitalDiv.style.backgroundColor = corHospital;
+    hospitalDiv.style.color = 'white';
+    hospitalDiv.style.padding = '5px';
+    hospitalDiv.style.borderRadius = '5px';
+    hospitalDiv.style.textAlign = 'center';
+    hospitalDiv.textContent = hospital; // Use o nome do hospital aqui
+
+    const detalhes = document.createElement('div');
+    detalhes.classList.add('detalhes');
+    detalhes.innerHTML = `
+      <strong>CRM:</strong> ${medico.CRM || 'N/A'}<br>
+      <strong>IR:</strong> ${medico.IR || 'N/A'}<br>
+      <strong>Contrato:</strong> ${medico.Contrato || 'N/A'}<br>
+      <strong>CPF:</strong> ${medico.CPF || 'N/A'}<br>
+      <strong>RQE:</strong> ${medico.RQE || 'N/A'}<br>
+      <strong>Nome da Mãe:</strong> ${medico["Nome da Mãe"] || 'N/A'}<br>
+      <strong>Data de Nascimento:</strong> ${medico["Data de Nascimento"] || 'N/A'}<br>
+      <strong>PIX:</strong> ${medico.PIX || 'N/A'}<br>
+      <strong>Banco:</strong> ${medico.Banco || 'N/A'}<br>
+      <strong>Código do Banco:</strong> ${medico["Codigo do Banco"] || 'N/A'}<br>
+      <strong>Agência:</strong> ${medico["Agência sem digito"] || 'N/A'}<br>
+      <strong>Conta:</strong> ${medico["Conta com o Dígito"] || 'N/A'}<br>
+      <strong>Estado civil:</strong> ${medico["Estado Civil"] || 'N/A'}<br>
+      <strong>Naturalidade:</strong> ${medico.Naturalidade || 'N/A'}<br>
+      <strong>E-mail:</strong> ${medico["E-mail"] || 'N/A'}<br>
+      <strong>WhatsApp:</strong> ${medico.Whatsapp || 'N/A'}<br>
+      <strong>CEP:</strong> ${medico.CEP || 'N/A'}<br>
+      <strong>Endereço:</strong> ${medico.Endereço || 'N/A'}
+    `;
+
+    card.appendChild(nomeMedico);
+    card.appendChild(especialidade);
+    card.appendChild(hospitalDiv);
+    card.appendChild(detalhes);
+
+    return card;
   }
-}
+
+
+
+  function alternarModoEscuro() {
+    const body = document.body;
+    body.classList.toggle('dark-mode');
+
+    const botao = document.getElementById('darkModeToggle');
+    if (body.classList.contains('dark-mode')) {
+      botao.textContent = 'Modo Claro';
+    } else {
+      botao.textContent = 'Modo Escuro';
+    }
+  }
+
 
 
   function validarLogin() {
@@ -454,33 +547,12 @@ function alternarModoEscuro() {
       return;
     }
 
-    container.innerHTML = lista.map(p => `
-      <div class="card">
-        <strong>Nome:</strong> ${p["Nome"] || 'N/A'}<br>
-        <strong>CRM:</strong> ${p["CRM"] || 'N/A'}<br>
-        <strong>Especialidade:</strong> ${p["Especialidade"] || 'N/A'}<br>
-        <strong>Hospital:</strong> ${p["Hospital"] || 'N/A'}
-        <div class="detalhes">
-          <strong>IR:</strong> ${p["IR"] || 'N/A'}<br>
-          <strong>Contrato:</strong> ${p["Contrato"] || 'N/A'}<br>
-          <strong>CPF:</strong> ${p["CPF"] || 'N/A'}<br>
-          <strong>RQE:</strong> ${p["RQE"] || 'N/A'}<br>
-          <strong>Nome da Mãe:</strong> ${p["Nome da Mãe"] || 'N/A'}<br>
-          <strong>Data de Nascimento:</strong> ${p["Data de Nascimento"] || 'N/A'}<br>
-          <strong>PIX:</strong> ${p["PIX"] || 'N/A'}<br>
-          <strong>Banco:</strong> ${p["Banco"] || 'N/A'}<br>
-          <strong>Código do Banco:</strong> ${p["Codigo do Banco"] || 'N/A'}<br>
-          <strong>Agência:</strong> ${p["Agência sem digito"] || 'N/A'}<br>
-          <strong>Conta:</strong> ${p["Conta com o Dígito"] || 'N/A'}<br>
-          <strong>Estado civil:</strong> ${p["Estado Civil"] || 'N/A'}<br>
-          <strong>Naturalidade:</strong> ${p["Naturalidade"] || 'N/A'}<br>
-          <strong>E-mail:</strong> ${p["E-mail"] || 'N/A'}<br>
-          <strong>WhatsApp:</strong> ${p["Whatsapp"] || 'N/A'}<br>
-          <strong>CEP:</strong> ${p["CEP"] || 'N/A'}<br>
-          <strong>Endereço:</strong> ${p["Endereço"] || 'N/A'}
-        </div>
-      </div>
-    `).join('');
+    container.innerHTML = ''; // Limpa o conteúdo anterior
+
+    lista.forEach(medico => {
+      const card = criarCard(medico);
+      container.appendChild(card);
+    });
   }
 
   function criarBotoesFiltro() {
@@ -490,45 +562,53 @@ function alternarModoEscuro() {
       <button onclick="filtrar('${bloco}')" class="${bloco === 'Todos' ? 'active' : ''}">${bloco}</button>
     `).join('');
   }
-  
+
   function gerarPDF() {
-  const resultados = document.getElementById("results");
+    const resultados = document.getElementById("results");
 
-  if (!resultados || resultados.innerHTML.trim() === "") {
-    alert("Nenhum resultado para gerar PDF.");
-    return;
+    if (!resultados || resultados.innerHTML.trim() === "") {
+      alert("Nenhum resultado para gerar PDF.");
+      return;
+    }
+
+    const clone = resultados.cloneNode(true);
+
+    // Força o estilo de fundo branco e texto preto no clone
+    clone.style.backgroundColor = 'white';
+    clone.style.color = 'black';
+
+    clone.querySelectorAll('.card').forEach(card => {
+      card.style.backgroundColor = 'white';
+      card.style.color = 'black';
+      card.style.boxShadow = 'none';
+    });
+
+    clone.querySelectorAll('.detalhes').forEach(div => {
+      div.style.display = 'block';
+      div.style.color = 'black';
+    });
+
+    const opt = {
+      margin: 0.5,
+      filename: `medicos_resultado_${new Date().toISOString().slice(0, 10)}.pdf`,
+      image: {
+        type: 'jpeg',
+        quality: 0.98
+      },
+      html2canvas: {
+        scale: 2
+      },
+      jsPDF: {
+        unit: 'in',
+        format: 'letter',
+        orientation: 'portrait'
+      }
+    };
+
+    html2pdf().from(clone).set(opt).save();
   }
-
-  const clone = resultados.cloneNode(true);
-
-  // Força o estilo de fundo branco e texto preto no clone
-  clone.style.backgroundColor = 'white';
-  clone.style.color = 'black';
-
-  clone.querySelectorAll('.card').forEach(card => {
-    card.style.backgroundColor = 'white';
-    card.style.color = 'black';
-    card.style.boxShadow = 'none';
-  });
-
-  clone.querySelectorAll('.detalhes').forEach(div => {
-    div.style.display = 'block';
-    div.style.color = 'black';
-  });
-
-  const opt = {
-    margin:       0.5,
-    filename:     `medicos_resultado_${new Date().toISOString().slice(0,10)}.pdf`,
-    image:        { type: 'jpeg', quality: 0.98 },
-    html2canvas:  { scale: 2 },
-    jsPDF:        { unit: 'in', format: 'letter', orientation: 'portrait' }
-  };
-
-  html2pdf().from(clone).set(opt).save();
-}
-
-
 </script>
+
 
 </body>
 </html>
