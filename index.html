@@ -296,7 +296,30 @@ button {
 
   </style>
   
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js">
+    
+   function gerarPDF() {
+  const element = document.getElementById('results'); // ou outro elemento que deseja exportar
+  if (!element || element.innerHTML.trim() === "") {
+    alert("Nenhum conteúdo disponível para gerar o PDF.");
+    return;
+  }
+
+  const opt = {
+    margin:       0.5,
+    filename:     'medicos.pdf',
+    image:        { type: 'jpeg', quality: 0.98 },
+    html2canvas:  { scale: 2 },
+    jsPDF:        { unit: 'in', format: 'letter', orientation: 'portrait' }
+  };
+
+  html2pdf().set(opt).from(element).save();
+}
+ 
+    
+    
+    
+  </script>
 
 </head>
 
@@ -491,6 +514,33 @@ button {
       botao.textContent = 'Modo Escuro';
     }
   }
+
+function gerarPDF() {
+    const element = document.getElementById('results');
+
+    // 1. Verifica se há algo para exportar
+    if (!element || element.childElementCount === 0) {
+      alert("Não há resultados na tela para gerar o PDF.");
+      return;
+    }
+
+    // 2. Define opções do html2pdf
+    const opt = {
+      margin:      0.35,                    // margens em polegadas
+      filename:    'medicos.pdf',           // nome do arquivo
+      image:       { type: 'jpeg', quality: 0.98 },
+      html2canvas: { scale: 2,             // melhor qualidade
+                     useCORS: true },      // tenta puxar CSS externo/imagens
+      jsPDF:       { unit: 'in',
+                     format: 'letter',
+                     orientation: 'portrait' }
+    };
+
+    // 3. Gera e baixa o PDF
+    html2pdf().set(opt).from(element).save();
+  }
+
+
 
   function baixarZip(nomeMedico) {
     // Caso tenha arquivos específicos por médico, ajuste aqui
