@@ -366,20 +366,19 @@ button {
   const sinonimosHospitais = {
     "CEJAM": ["cejam", "cejan"],
     "AME CARAPICUIBA": ["ame carapicuiba", "carapicuiba", "Hospital Carapicuiba"],
-    "BRASILANDIA": ["Brasilandia", "Brasilândia", "H. Brasilândia", "Hospital Brasilândia", "Hospital Brasilandia", "brasilandia", "hospital brasilandia", "hospital brasilândia"],
-    "MBOI": ["mboi", "mbói", "mboi mirim", "H.MBOI", "Hospital MBOI"],
-    "Tiradentes": ["tiradentes", "tiradêntes", "H. Tiradentes", "Tira", "Hospital Tiradentes", "TIRADENTES", "hospital tiradentes", "hosp tiradentes"],
-    "ITAIM": ["itaim", "itáim", "H. Itaim", "Itaím", "Hospital Itaim"],
+    "BRASILANDIA": ["brasilandia", "brasilândia", "h. brasilândia", "hospital brasilândia", "hospital brasilandia", "brasilandia", "hospital brasilandia", "hospital brasilândia"],
+    "MBOI": ["mboi", "mbói", "mboi mirim", "h.mboi", "hospital mboi"],
+    "Tiradentes": ["tiradentes", "tiradêntes", "h. tiradentes", "tira", "hospital tiradentes", "tiradentes", "hospital tiradentes", "hosp tiradentes"],
+    "ITAIM": ["itaim", "itáim", "h. itaim", "itaím", "hospital itaim"],
     "HGG": ["hgg", "hospital geral grajaú"],
     "HMB": ["hmb", "hospital municipal barreto"],
-    "HGP": ["hgp", "hospital geral pirajussara", "H. Pirajussara", "Pirajussara", "Hospital Pirajussara"],
-    "Pedreira": ["pedreira", "hospital pedreira", "H.Pedreira"],
+    "HGP": ["hgp", "hospital geral pirajussara", "h. pirajussara", "pirajussara", "hospital pirajussara"],
+    "Pedreira": ["pedreira", "hospital pedreira", "h.pedreira"],
     "Ame dos Prados": ["ame dos prados", "dos prados"],
     "HMU": ["hmu", "hospital municipal de urgência"],
-    "CHS": ["chs", "centro hospitalar sul", "Sorocaba", "H. Sorocaba"]
+    "CHS": ["chs", "centro hospitalar sul", "sorocaba", "h. sorocaba"]
   };
 
-  // Mapeamento de hospitais para cores
   const hospitalCores = {
     "CEJAM": "lightblue",
     "AME CARAPICUIBA": "orange",
@@ -394,7 +393,6 @@ button {
     "Ame dos Prados": "fuchsia",
     "HMU": "olive",
     "CHS": "navy"
-    // Adicione mais hospitais e cores conforme necessário
   };
 
   document.getElementById("senha").addEventListener("keypress", function(e) {
@@ -405,85 +403,81 @@ button {
     if (e.key === "Enter") buscar();
   });
 
-function criarCard(medico) {
-  const card = document.createElement('div');
-  card.className = 'card';
+  function criarCard(medico) {
+    const card = document.createElement('div');
+    card.className = 'card';
 
-  // Cabeçalho com nome e botão de download
-  const nome = document.createElement('h3');
-  nome.style.display = 'flex';
-  nome.style.alignItems = 'center';
+    const nome = document.createElement('h3');
+    nome.style.display = 'flex';
+    nome.style.alignItems = 'center';
 
-  const nomeText = document.createElement('span');
-  nomeText.textContent = medico.Nome || medico.NOME || 'Nome não informado';
-  nomeText.style.marginRight = '10px';
+    const nomeText = document.createElement('span');
+    nomeText.textContent = medico.Nome || medico.NOME || 'Nome não informado';
+    nomeText.style.marginRight = '10px';
 
-  const crmText = document.createElement('span');
-  crmText.textContent = `CRM: ${medico.CRM || 'N/A'}`;
-  crmText.style.fontSize = '0.8em';
-  crmText.style.color = '#777';
+    const crmText = document.createElement('span');
+    crmText.textContent = `CRM: ${medico.CRM || 'N/A'}`;
+    crmText.style.fontSize = '0.8em';
+    crmText.style.color = '#777';
 
-  nome.appendChild(nomeText);
-  nome.appendChild(crmText);
+    nome.appendChild(nomeText);
+    nome.appendChild(crmText);
 
-  const botaoZip = document.createElement('button');
-  botaoZip.innerHTML = '📁';
-  botaoZip.title = "Baixar arquivos";
-  botaoZip.style.marginLeft = '10px';
-  botaoZip.style.cursor = 'pointer';
-  botaoZip.onclick = () => baixarZip(medico.Nome || medico.NOME);
+    const botaoZip = document.createElement('button');
+    botaoZip.innerHTML = '📁';
+    botaoZip.title = "Baixar arquivos";
+    botaoZip.style.marginLeft = '10px';
+    botaoZip.style.cursor = 'pointer';
+    botaoZip.onclick = () => baixarZip(medico.Nome || medico.NOME);
 
-  const header = document.createElement('div');
-  header.style.display = 'flex';
-  header.style.alignItems = 'center';
-  header.appendChild(nome);
-  header.appendChild(botaoZip);
+    const header = document.createElement('div');
+    header.style.display = 'flex';
+    header.style.alignItems = 'center';
+    header.appendChild(nome);
+    header.appendChild(botaoZip);
 
-  card.appendChild(header);
+    card.appendChild(header);
 
-  // Especialidade
-  const especialidade = document.createElement('p');
-  especialidade.textContent = `Especialidade: ${medico.Especialidade || 'N/A'}`;
-  card.appendChild(especialidade);
+    const especialidade = document.createElement('p');
+    especialidade.textContent = `Especialidade: ${medico.Especialidade || 'N/A'}`;
+    card.appendChild(especialidade);
 
-  // Hospital com cor
-  const hospital = medico.HospitalNormalizado || 'Desconhecido';
-  const corHospital = hospitalCores[hospital] || 'gray';
+    const hospital = medico.HospitalNormalizado || 'Desconhecido';
+    const corHospital = hospitalCores[hospital] || 'gray';
 
-  const hospitalDiv = document.createElement('div');
-  hospitalDiv.style.backgroundColor = corHospital;
-  hospitalDiv.style.color = 'white';
-  hospitalDiv.style.padding = '5px';
-  hospitalDiv.style.borderRadius = '5px';
-  hospitalDiv.style.textAlign = 'center';
-  hospitalDiv.textContent = hospital;
-  card.appendChild(hospitalDiv);
+    const hospitalDiv = document.createElement('div');
+    hospitalDiv.style.backgroundColor = corHospital;
+    hospitalDiv.style.color = 'white';
+    hospitalDiv.style.padding = '5px';
+    hospitalDiv.style.borderRadius = '5px';
+    hospitalDiv.style.textAlign = 'center';
+    hospitalDiv.textContent = hospital;
+    card.appendChild(hospitalDiv);
 
-  // Detalhes adicionais
-  const detalhes = document.createElement('div');
-  detalhes.classList.add('detalhes');
-  detalhes.innerHTML = `
-    <strong>IR:</strong> ${medico.IR || 'N/A'}<br>
-    <strong>Contrato:</strong> ${medico.Contrato || 'N/A'}<br>
-    <strong>CPF:</strong> ${medico.CPF || 'N/A'}<br>
-    <strong>RQE:</strong> ${medico.RQE || 'N/A'}<br>
-    <strong>Nome da Mãe:</strong> ${medico["Nome da Mãe"] || 'N/A'}<br>
-    <strong>Data de Nascimento:</strong> ${medico["Data de Nascimento"] || 'N/A'}<br>
-    <strong>PIX:</strong> ${medico.PIX || 'N/A'}<br>
-    <strong>Banco:</strong> ${medico.Banco || 'N/A'}<br>
-    <strong>Código do Banco:</strong> ${medico["Codigo do Banco"] || 'N/A'}<br>
-    <strong>Agência:</strong> ${medico["Agência sem digito"] || 'N/A'}<br>
-    <strong>Conta:</strong> ${medico["Conta com o Dígito"] || 'N/A'}<br>
-    <strong>Estado civil:</strong> ${medico["Estado Civil"] || 'N/A'}<br>
-    <strong>Naturalidade:</strong> ${medico.Naturalidade || 'N/A'}<br>
-    <strong>E-mail:</strong> ${medico["E-mail"] || 'N/A'}<br>
-    <strong>WhatsApp:</strong> ${medico.Whatsapp || 'N/A'}<br>
-    <strong>CEP:</strong> ${medico.CEP || 'N/A'}<br>
-    <strong>Endereço:</strong> ${medico.Endereço || 'N/A'}
-  `;
-  card.appendChild(detalhes);
+    const detalhes = document.createElement('div');
+    detalhes.classList.add('detalhes');
+    detalhes.innerHTML = `
+      <strong>IR:</strong> ${medico.IR || 'N/A'}<br>
+      <strong>Contrato:</strong> ${medico.Contrato || 'N/A'}<br>
+      <strong>CPF:</strong> ${medico.CPF || 'N/A'}<br>
+      <strong>RQE:</strong> ${medico.RQE || 'N/A'}<br>
+      <strong>Nome da Mãe:</strong> ${medico["Nome da Mãe"] || 'N/A'}<br>
+      <strong>Data de Nascimento:</strong> ${medico["Data de Nascimento"] || 'N/A'}<br>
+      <strong>PIX:</strong> ${medico.PIX || 'N/A'}<br>
+      <strong>Banco:</strong> ${medico.Banco || 'N/A'}<br>
+      <strong>Código do Banco:</strong> ${medico["Codigo do Banco"] || 'N/A'}<br>
+      <strong>Agência:</strong> ${medico["Agência sem digito"] || 'N/A'}<br>
+      <strong>Conta:</strong> ${medico["Conta com o Dígito"] || 'N/A'}<br>
+      <strong>Estado civil:</strong> ${medico["Estado Civil"] || 'N/A'}<br>
+      <strong>Naturalidade:</strong> ${medico.Naturalidade || 'N/A'}<br>
+      <strong>E-mail:</strong> ${medico["E-mail"] || 'N/A'}<br>
+      <strong>WhatsApp:</strong> ${medico.Whatsapp || 'N/A'}<br>
+      <strong>CEP:</strong> ${medico.CEP || 'N/A'}<br>
+      <strong>Endereço:</strong> ${medico.Endereço || 'N/A'}
+    `;
+    card.appendChild(detalhes);
 
-  return card;
+    return card;
   }
 
   function alternarModoEscuro() {
@@ -498,24 +492,22 @@ function criarCard(medico) {
     }
   }
 
-function baixarZip(nomeMedico) {
-  const nomeSanitizado = nomeMedico.normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/\s+/g, "_").toLowerCase();
-  const url = `https://res.cloudinary.com/dz4th0dhg/raw/upload/Giuliano_Campolin_2025-06-10_13_51_ools8g.zip`;
-  const link = document.createElement("a");
-  link.href = url;
-  link.download = `${nomeMedico}.zip`;
-  document.body.appendChild(link);
-  link.click();
-  document.body.removeChild(link);
-}
-
-
+  function baixarZip(nomeMedico) {
+    // Caso tenha arquivos específicos por médico, ajuste aqui
+    // Por enquanto, link fixo:
+    const link = document.createElement("a");
+    link.href = "https://res.cloudinary.com/dz4th0dhg/raw/upload/jnvxptvqqrxv0zoskjvu.zip";
+    link.download = "jnvxptvqqrxv0zoskjvu.zip";
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  }
 
   function validarLogin() {
     const login = document.getElementById("login").value;
     const senha = document.getElementById("senha").value;
 
-    const hcaptchaResponse = hcaptcha.getResponse();
+    const hcaptchaResponse = typeof hcaptcha !== 'undefined' ? hcaptcha.getResponse() : null;
 
     if (!hcaptchaResponse) {
       alert("Por favor, verifique o hCaptcha.");
@@ -532,14 +524,14 @@ function baixarZip(nomeMedico) {
     }
   }
 
-  function removerAcentos(str) {
+  function removerAcentos(str = '') {
     return str.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
   }
 
   function normalizarHospital(hospital) {
     const chave = removerAcentos((hospital || "").toLowerCase().trim());
     for (const [padrao, sinonimos] of Object.entries(sinonimosHospitais)) {
-      if (sinonimos.map(removerAcentos).includes(chave)) return padrao;
+      if (sinonimos.map(s => removerAcentos(s.toLowerCase())).includes(chave)) return padrao;
     }
     return hospital || '';
   }
@@ -558,11 +550,15 @@ function baixarZip(nomeMedico) {
 
   function buscar() {
     const termo = document.getElementById("searchInput").value.toLowerCase();
+    const filtro = filtroAtual === 'Todos' ? 'Todos' : normalizarHospital(filtroAtual);
+
     const filtrado = dados.filter(p =>
-      p["Nome"]?.toLowerCase().includes(termo) ||
-      p["CRM"]?.toLowerCase().includes(termo)
+      (p["Nome"]?.toLowerCase().includes(termo) ||
+      p["CRM"]?.toLowerCase().includes(termo))
     );
-    const resultado = filtroAtual === 'Todos' ? filtrado : filtrado.filter(p => p.HospitalNormalizado === filtroAtual);
+
+    const resultado = filtro === 'Todos' ? filtrado : filtrado.filter(p => p.HospitalNormalizado === filtro);
+
     renderizarResultados(resultado);
   }
 
@@ -584,7 +580,7 @@ function baixarZip(nomeMedico) {
       return;
     }
 
-    container.innerHTML = ''; // Limpa o conteúdo anterior
+    container.innerHTML = '';
 
     lista.forEach(medico => {
       const card = criarCard(medico);
@@ -595,54 +591,15 @@ function baixarZip(nomeMedico) {
   function criarBotoesFiltro() {
     const container = document.getElementById("filterButtons");
     const blocos = ["Todos", ...Object.keys(sinonimosHospitais)];
-    container.innerHTML = blocos.map(bloco => `
-      <button onclick="filtrar('${bloco}')" class="${bloco === 'Todos' ? 'active' : ''}">${bloco}</button>
-    `).join('');
-  }
+    container.innerHTML = "";
 
-  function gerarPDF() {
-    const resultados = document.getElementById("results");
-
-    if (!resultados || resultados.innerHTML.trim() === "") {
-      alert("Nenhum resultado para gerar PDF.");
-      return;
-    }
-
-    const clone = resultados.cloneNode(true);
-
-    // Força o estilo de fundo branco e texto preto no clone
-    clone.style.backgroundColor = 'white';
-    clone.style.color = 'black';
-
-    clone.querySelectorAll('.card').forEach(card => {
-      card.style.backgroundColor = 'white';
-      card.style.color = 'black';
-      card.style.boxShadow = 'none';
+    blocos.forEach(bloco => {
+      const btn = document.createElement("button");
+      btn.textContent = bloco;
+      btn.onclick = () => filtrar(bloco);
+      if (bloco === "Todos") btn.classList.add("active");
+      container.appendChild(btn);
     });
-
-    clone.querySelectorAll('.detalhes').forEach(div => {
-      div.style.display = 'block';
-      div.style.color = 'black';
-    });
-
-    const opt = {
-      margin: 0.5,
-      filename: `medicos_resultado_${new Date().toISOString().slice(0, 10)}.pdf`,
-      image: {
-        type: 'jpeg',
-        quality: 0.98
-      },
-      html2canvas: {
-        scale: 2
-      },
-      jsPDF: {
-        unit: 'in',
-        format: 'letter',
-        orientation: 'portrait'
-      }
-    };
-
-    html2pdf().from(clone).set(opt).save();
   }
 </script>
 
