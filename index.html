@@ -405,20 +405,39 @@ button {
     if (e.key === "Enter") buscar();
   });
 
-
-  function criarCard(medico) {
+function criarCard(medico) {
     const card = document.createElement('div');
     card.classList.add('card');
-
+    
+    
     const nomeMedico = document.createElement('h3');
-    nomeMedico.textContent = medico.Nome; // Use medico.Nome em vez de medico.nome
-
+    nomeMedico.style.display = 'flex'; // Adiciona estilo flex
+    nomeMedico.style.alignItems = 'center'; // Alinha verticalmente
+    
+    
+    const nomeText = document.createElement('span'); // Span para o nome
+    nomeText.textContent = medico.Nome;
+    nomeText.style.marginRight = '10px'; // Adiciona um espaço entre o nome e o CRM
+    
+    
+    const crmText = document.createElement('span'); // Span para o CRM
+    crmText.textContent = `CRM: ${medico.CRM || 'N/A'}`;
+    crmText.style.fontSize = '0.8em'; // Reduz o tamanho da fonte do CRM
+    crmText.style.color = '#777'; // Cor mais clara para o CRM
+    
+    
+    nomeMedico.appendChild(nomeText); // Adiciona o nome ao h3
+    nomeMedico.appendChild(crmText); // Adiciona o CRM ao h3
+    
+    
     const especialidade = document.createElement('p');
     especialidade.textContent = `Especialidade: ${medico.Especialidade}`; // Use medico.Especialidade
-
+    
+    
     const hospital = medico.HospitalNormalizado; // Use HospitalNormalizado
     const corHospital = hospitalCores[hospital] || "gray"; // Cor padrão se o hospital não estiver no mapeamento
-
+    
+    
     const hospitalDiv = document.createElement('div');
     hospitalDiv.style.backgroundColor = corHospital;
     hospitalDiv.style.color = 'white';
@@ -427,10 +446,9 @@ button {
     hospitalDiv.style.textAlign = 'center';
     hospitalDiv.textContent = hospital; // Use o nome do hospital aqui
 
-    const detalhes = document.createElement('div');
+const detalhes = document.createElement('div');
     detalhes.classList.add('detalhes');
     detalhes.innerHTML = `
-      <strong>CRM:</strong> ${medico.CRM || 'N/A'}<br>
       <strong>IR:</strong> ${medico.IR || 'N/A'}<br>
       <strong>Contrato:</strong> ${medico.Contrato || 'N/A'}<br>
       <strong>CPF:</strong> ${medico.CPF || 'N/A'}<br>
@@ -449,16 +467,12 @@ button {
       <strong>CEP:</strong> ${medico.CEP || 'N/A'}<br>
       <strong>Endereço:</strong> ${medico.Endereço || 'N/A'}
     `;
-
     card.appendChild(nomeMedico);
     card.appendChild(especialidade);
     card.appendChild(hospitalDiv);
     card.appendChild(detalhes);
-
     return card;
   }
-
-
 
   function alternarModoEscuro() {
     const body = document.body;
@@ -471,7 +485,6 @@ button {
       botao.textContent = 'Modo Escuro';
     }
   }
-
 
 
   function validarLogin() {
